@@ -29,9 +29,9 @@ extension Transactions {
 
         public let recipientPublicKey: String?
 
-        public let amount: UInt64
+        public let amount: String
 
-        public let fee: UInt64
+        public let fee: String
 
         public let signature: String
 
