@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import Ed25519
 
 /// Type of transactions supported on Lisk network
 public enum TransactionType: UInt8, Encodable {
@@ -55,6 +56,18 @@ extension Transactions {
         do {
             let transaction = LocalTransaction(.transfer, lsk: lsk, recipientId: recipient)
             let signedTransaction = try transaction.signed(passphrase: passphrase, secondPassphrase: secondPassphrase)
+            submit(signedTransaction: signedTransaction, completionHandler: completionHandler)
+        } catch {
+            let response = APIError(message: error.localizedDescription)
+            completionHandler(.error(response: response))
+        }
+    }
+    
+    /// Transfer LSK to a Lisk address using Local Signing with KeyPair
+    public func transfer(lsk: Double, to recipient: String, keyPair: KeyPair, completionHandler: @escaping (Response<TransactionBroadcastResponse>) -> Void) {
+        do {
+            let transaction = LocalTransaction(.transfer, lsk: lsk, recipientId: recipient)
+            let signedTransaction = try transaction.signed(keyPair: keyPair)
             submit(signedTransaction: signedTransaction, completionHandler: completionHandler)
         } catch {
             let response = APIError(message: error.localizedDescription)

@@ -110,7 +110,7 @@ public struct LocalTransaction {
     }
 
     /// Returns a new signed transaction based on this transaction
-    private func signed(keyPair: KeyPair, secondKeyPair: KeyPair? = nil) throws -> LocalTransaction {
+    public func signed(keyPair: KeyPair, secondKeyPair: KeyPair? = nil) throws -> LocalTransaction {
         var transaction = LocalTransaction(transaction: self)
         transaction.senderPublicKey = keyPair.publicKeyString
         transaction.signature = LocalTransaction.generateSignature(bytes: transaction.bytes, keyPair: keyPair)
@@ -122,7 +122,7 @@ public struct LocalTransaction {
     }
 
     /// Signs the current transaction
-    private mutating func sign(keyPair: KeyPair, secondKeyPair: KeyPair? = nil) throws {
+    public mutating func sign(keyPair: KeyPair, secondKeyPair: KeyPair? = nil) throws {
         let transaction = try signed(keyPair: keyPair, secondKeyPair: secondKeyPair)
         self.id = transaction.id
         self.senderPublicKey = transaction.senderPublicKey
