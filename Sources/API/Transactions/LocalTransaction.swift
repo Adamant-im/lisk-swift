@@ -217,17 +217,20 @@ extension LocalTransaction {
 extension LocalTransaction {
 
     var requestOptions: RequestOptions {
-        return [
+        var options: RequestOptions = [
             "id": id ?? NSNull(),
             "type": type.rawValue,
-            "amount": amount,
-            "fee": fee,
+            "amount": "\(amount)",
+            "fee": "\(fee)",
             "recipientId": recipientId ?? NSNull(),
             "senderPublicKey": senderPublicKey ?? NSNull(),
             "timestamp": timestamp,
-            "asset": asset ?? NSNull(),
-            "signature": signature ?? NSNull(),
-            "signSignature": signSignature ?? NSNull()
+            "asset": asset ?? Asset(),
+            "signature": signature ?? NSNull()
         ]
+        
+        if let value = signSignature { options["signSignature"] = value }
+        
+        return options
     }
 }

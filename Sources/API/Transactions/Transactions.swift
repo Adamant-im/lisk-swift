@@ -42,11 +42,7 @@ extension Transactions {
             return completionHandler(.error(response: response))
         }
 
-        let options: RequestOptions = [
-            "transaction": signedTransaction.requestOptions
-        ]
-
-        client.post(path: "transactions", options: options, completionHandler: completionHandler)
+        client.post(path: "transactions", options: signedTransaction.requestOptions, completionHandler: completionHandler)
     }
 }
 
