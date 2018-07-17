@@ -100,12 +100,13 @@ extension Transactions {
 extension Transactions {
 
     /// List transaction objects
-    public func transactions(id: String? = nil, block: String? = nil, sender: String? = nil, recipient: String? = nil, limit: UInt? = nil, offset: UInt? = nil, sort: APIRequest.Sort? = nil, completionHandler: @escaping (Response<TransactionsResponse>) -> Void) {
+    public func transactions(id: String? = nil, block: String? = nil, sender: String? = nil, recipient: String? = nil, senderIdOrRecipientId: String? = nil, limit: UInt? = nil, offset: UInt? = nil, sort: APIRequest.Sort? = nil, completionHandler: @escaping (Response<TransactionsResponse>) -> Void) {
         var options: RequestOptions = [:]
         if let value = id { options["id"] = value }
         if let value = block { options["blockId"] = value }
         if let value = sender { options["senderId"] = value }
         if let value = recipient { options["recipientId"] = value }
+        if let value = senderIdOrRecipientId { options["senderIdOrRecipientId"] = value }
         if let value = limit { options["limit"] = value }
         if let value = offset { options["offset"] = value }
         if let value = sort?.value { options["sort"] = value }
