@@ -24,6 +24,11 @@ public struct APIRequest {
         public var value: String {
             return "\(column):\(direction.rawValue)"
         }
+        
+        public init(_ column: String, direction: Direction = .ascending) {
+            self.column = column
+            self.direction = direction
+        }
     }
 
     /// Property join type
