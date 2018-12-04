@@ -13,7 +13,7 @@ let package = Package(
     targets: [
         .target(
             name: "Lisk",
-            dependencies: ["Ed25519"],
+            dependencies: ["Ed25519", "CryptoSwift"],
             path: "./Sources"
         ),
         .testTarget(

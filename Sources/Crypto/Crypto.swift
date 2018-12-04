@@ -7,6 +7,7 @@
 
 import Foundation
 import Ed25519
+import CryptoSwift
 
 public struct Crypto {
 
@@ -21,6 +22,20 @@ public struct Crypto {
         let bytes = SHA256(passphrase).digest()
         let seed = try Seed(bytes: bytes)
         return KeyPair(seed: seed)
+    }
+    
+    /// Generate key pair from a given secret and salt
+    public static func keyPair(fromPassphrase passphrase: String, salt: String) throws -> KeyPair {
+        let bytes = try Crypto.seed(passphrase: passphrase, salt: salt)
+        let seed = try Seed(bytes: bytes)
+        return KeyPair(seed: seed)
+    }
+    
+    private static func seed(passphrase: String, salt: String = "mnemonic") throws -> [UInt8] {
+        let password = passphrase.decomposedStringWithCompatibilityMapping
+        let salt = salt.decomposedStringWithCompatibilityMapping
+        
+        return try PKCS5.PBKDF2(password: password.bytes, salt: salt.bytes, iterations: 2048, keyLength: 32, variant: HMAC.Variant.sha256).calculate()
     }
 
     /// Extract Lisk address from a public key
