@@ -6,7 +6,6 @@
 //
 
 import Foundation
-import Ed25519
 
 /// Struct to represent a local transaction with the ability to locally sign via a secret passphrase
 public struct LocalTransaction {
