@@ -6,7 +6,6 @@
 //
 
 import Foundation
-import Ed25519
 
 /// Struct to represent a local transaction with the ability to locally sign via a secret passphrase
 public struct LocalTransaction {
@@ -89,6 +88,27 @@ public struct LocalTransaction {
     }
 
     /// Returns a new signed transaction based on this transaction
+    public func signed(passphrase: String, secondPassphrase: String? = nil) throws -> LocalTransaction {
+        let keyPair = try Crypto.keyPair(fromPassphrase: passphrase)
+        let secondKeyPair: KeyPair?
+        if let secondPassphrase = secondPassphrase {
+            secondKeyPair = try Crypto.keyPair(fromPassphrase: secondPassphrase)
+        } else {
+            secondKeyPair = nil
+        }
+        return try signed(keyPair: keyPair, secondKeyPair: secondKeyPair)
+    }
+
+    /// Signs the current transaction
+    public mutating func sign(passphrase: String, secondPassphrase: String? = nil) throws {
+        let transaction = try signed(passphrase: passphrase, secondPassphrase: secondPassphrase)
+        self.id = transaction.id
+        self.senderPublicKey = transaction.senderPublicKey
+        self.signature = transaction.signature
+        self.signSignature = transaction.signSignature
+    }
+
+    /// Returns a new signed transaction based on this transaction
     public func signed(keyPair: KeyPair, secondKeyPair: KeyPair? = nil) throws -> LocalTransaction {
         var transaction = LocalTransaction(transaction: self)
         transaction.senderPublicKey = keyPair.publicKeyString
@@ -100,30 +120,9 @@ public struct LocalTransaction {
         return transaction
     }
 
-    /// Returns a new signed transaction based on this transaction
-    public func signed(secret: String, secondSecret: String? = nil) throws -> LocalTransaction {
-        let keyPair = try Crypto.keyPair(fromSecret: secret)
-        let secondKeyPair: KeyPair?
-        if let secondSecret = secondSecret {
-            secondKeyPair = try Crypto.keyPair(fromSecret: secondSecret)
-        } else {
-            secondKeyPair = nil
-        }
-        return try signed(keyPair: keyPair, secondKeyPair: secondKeyPair)
-    }
-
     /// Signs the current transaction
     public mutating func sign(keyPair: KeyPair, secondKeyPair: KeyPair? = nil) throws {
         let transaction = try signed(keyPair: keyPair, secondKeyPair: secondKeyPair)
-        self.id = transaction.id
-        self.senderPublicKey = transaction.senderPublicKey
-        self.signature = transaction.signature
-        self.signSignature = transaction.signSignature
-    }
-
-    /// Signs the current transaction
-    public mutating func sign(secret: String, secondSecret: String? = nil) throws {
-        let transaction = try signed(secret: secret, secondSecret: secondSecret)
         self.id = transaction.id
         self.senderPublicKey = transaction.senderPublicKey
         self.signature = transaction.signature
@@ -217,17 +216,20 @@ extension LocalTransaction {
 extension LocalTransaction {
 
     var requestOptions: RequestOptions {
-        return [
+        var options: RequestOptions = [
             "id": id ?? NSNull(),
             "type": type.rawValue,
-            "amount": amount,
-            "fee": fee,
+            "amount": "\(amount)",
+            "fee": "\(fee)",
             "recipientId": recipientId ?? NSNull(),
             "senderPublicKey": senderPublicKey ?? NSNull(),
             "timestamp": timestamp,
-            "asset": asset ?? NSNull(),
-            "signature": signature ?? NSNull(),
-            "signSignature": signSignature ?? NSNull()
+            "asset": asset ?? Asset(),
+            "signature": signature ?? NSNull()
         ]
+        
+        if let value = signSignature { options["signSignature"] = value }
+        
+        return options
     }
 }

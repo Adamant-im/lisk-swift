@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
   s.name = 'Lisk'
-  s.version = '1.0.0-beta13'
+  s.version = '1.1.0'
   s.summary = 'Swift 4 library for Lisk - the cryptocurrency and blockchain application platform'
   s.homepage = 'https://github.com/AndrewBarba/lisk-swift'
   s.documentation_url = 'https://andrewbarba.github.io/lisk-swift/'
@@ -19,5 +19,6 @@ Pod::Spec.new do |s|
   s.source_files = 'Sources/**/*.{h,swift}'
   s.public_header_files = 'Sources/**/*.h'
 
-  s.dependency 'Ed25519', '~> 0.2.0'
+  s.dependency 'CryptoSwift', '~> 0.12.0'
+  s.dependency 'libsodium', '~> 1.0.12'
 end

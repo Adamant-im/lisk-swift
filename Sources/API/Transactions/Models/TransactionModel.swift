@@ -29,12 +29,22 @@ extension Transactions {
 
         public let recipientPublicKey: String?
 
-        public let amount: UInt64
+        public let amount: String
 
-        public let fee: UInt64
+        public let fee: String
 
         public let signature: String
 
         public let confirmations: UInt64
+
+        // MARK: - Hashable
+
+        public static func == (lhs: TransactionModel, rhs: TransactionModel) -> Bool {
+            return lhs.id == rhs.id
+        }
+
+        public var hashValue: Int {
+            return id.hashValue
+        }
     }
 }
