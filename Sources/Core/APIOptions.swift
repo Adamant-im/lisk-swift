@@ -23,6 +23,12 @@ public struct APIOptions {
     public var node: APINode {
         return nodes.select(random: randomNode)
     }
+    
+    public init(nodes: [APINode], nethash: APINethash, randomNode: Bool) {
+        self.nodes = nodes
+        self.nethash = nethash
+        self.randomNode = randomNode
+    }
 }
 
 extension APIOptions {
