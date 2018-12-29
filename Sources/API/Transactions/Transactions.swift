@@ -6,7 +6,6 @@
 //
 
 import Foundation
-import Ed25519
 
 /// Type of transactions supported on Lisk network
 public enum TransactionType: UInt8, Encodable {
