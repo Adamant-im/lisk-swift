@@ -19,6 +19,6 @@ Pod::Spec.new do |s|
   s.source_files = 'Sources/**/*.{h,swift}'
   s.public_header_files = 'Sources/**/*.h'
 
-  s.dependency 'CryptoSwift', '~> 0.12.0'
-  s.dependency 'libsodium', '~> 1.0.12'
+  s.dependency 'CryptoSwift'
+  s.dependency 'libsodium'
 end

@@ -8,7 +8,8 @@ let package = Package(
         .library(name: "Lisk", targets: ["Lisk"]),
     ],
     dependencies: [
-        .package(url: "https://github.com/AndrewBarba/ed25519.git", from: "1.1.0")
+        .package(url: "https://github.com/AndrewBarba/ed25519.git", from: "1.1.0"),
+        .package(url: "https://github.com/krzyzanowskim/CryptoSwift.git", from: "1.0.0")
     ],
     targets: [
         .target(
